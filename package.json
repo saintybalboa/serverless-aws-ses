@@ -1,6 +1,6 @@
 {
   "name": "@saintybalboa/serverless-aws-ses",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create custom email addresses in AWS SES that other AWS services can use to send email.",
   "keywords": [
     "aws",
