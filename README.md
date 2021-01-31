@@ -15,7 +15,7 @@ Requires the following:
 ### Installing
 
 ```bash
-npm i serverless-aws-ses
+npm i @saintybalboa/serverless-aws-ses
 ```
 
 Update serverless.yml.
@@ -24,7 +24,7 @@ Add the plugin:
 
 ```yml
 plugins:
-  - serverless-aws-ses
+  - '@saintybalboa/serverless-aws-ses'
 ```
 
 > **Important**: AWS will attempt to send a verification link to each email address you attempt to add to SES. You are required to visit the link in order to active the email address. You won't have access to incoming email at this point, so you'll need to setup an action for incoming email.
