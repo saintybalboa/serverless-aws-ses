@@ -1,6 +1,7 @@
 import delay from 'delay';
 import { Route53, SES } from 'aws-sdk';
 import { Commands, Config, Hooks, ResourceRecordSet, Serverless } from './types';
+import { Error } from 'aws-sdk/clients/servicecatalog';
 
 /**
  * Create a new instance.
@@ -17,7 +18,7 @@ export default class ServerlessAwsSes {
   private route53: Route53;
   private emailReceiptRuleSetName = 'EmailReceiptRuleSet';
   private emailReceiptRuleName = 'EmailForwarderRule';
-  private delayEmailVerificationMs = 60000;
+  private delayEmailVerificationMs = 30000;
 
   constructor(serverless: Serverless) {
     this.serverless = serverless;
@@ -39,12 +40,10 @@ export default class ServerlessAwsSes {
       'after:deploy:deploy': this.add.bind(this)
     };
 
-    if (this.service.custom) {
-      this.config = this.service.custom['sesConfig'];
+    this.config = this.service.custom['sesConfig'];
 
-      if (this.config.delayEmailVerificationMs) {
-        this.delayEmailVerificationMs = this.config.delayEmailVerificationMs;
-      }
+    if (this.config.delayEmailVerificationMs) {
+      this.delayEmailVerificationMs = this.config.delayEmailVerificationMs;
     }
 
     this.route53 = new this.serverless.providers.aws.sdk.Route53({ region: this.service.provider.region });
@@ -52,19 +51,19 @@ export default class ServerlessAwsSes {
   }
 
   /**
-   * Remove AWS SES configuration including relevant  DNS records
+   * Add AWS SES configuration including relevant DNS records
    */
-  public async remove() {
-    await this.applyDNSChanges('DELETE');
-    await this.removeSesConfiguration();
+  public async add(): Promise<void | Error> {
+    await this.applyDNSChanges('UPSERT');
+    await this.addSesConfiguration();
   }
 
   /**
-   * Add AWS SES configuration including relevant DNS records
+   * Remove AWS SES configuration including relevant  DNS records
    */
-  public async add() {
-    await this.applyDNSChanges('UPSERT');
-    await this.addSesConfiguration();
+  public async remove(): Promise<void | Error> {
+    await this.applyDNSChanges('DELETE');
+    await this.removeSesConfiguration();
   }
 
   /**
@@ -104,7 +103,7 @@ export default class ServerlessAwsSes {
    *
    * @return Promose<void>
    */
-  public async applyDNSChanges(action: string): Promise<void> {
+  public async applyDNSChanges(action: string): Promise<void | Error> {
     const hostedZoneRecordSets = [];
 
     this.serverless.cli.log(`Requesting Domain Identity Verification credentials for: ${this.config.domain} ...`);
@@ -192,12 +191,18 @@ export default class ServerlessAwsSes {
    *
    * @return Promise<void>
    */
-  public async removeSesConfiguration(): Promise<void> {
+  public async removeSesConfiguration(): Promise<void | Error> {
     const recipients = this.getRecipients();
 
     this.serverless.cli.log('Setting SES Receipt RuleSet to inactive ...');
     // Set the active Receipt RuleSet to inactive by not specifying a RuleSetName in the params
-    await this.ses.setActiveReceiptRuleSet().promise();
+    await this.ses
+      .setActiveReceiptRuleSet()
+      .promise()
+      .catch((error) => {
+        this.serverless.cli.log('Failed to set SES Receipt RuleSet to inactive');
+        throw error;
+      });
 
     this.serverless.cli.log(`Deleting SES Receipt RuleSet: ${this.emailReceiptRuleSetName} ...`);
 
@@ -244,7 +249,7 @@ export default class ServerlessAwsSes {
    *
    * @return Promise<void>
    */
-  private async addSesConfiguration(): Promise<void> {
+  public async addSesConfiguration(): Promise<void | Error> {
     const recipients = this.getRecipients();
 
     this.serverless.cli.log(`Creating SES Receipt RuleSet: ${this.emailReceiptRuleSetName} ...`);

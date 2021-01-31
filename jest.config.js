@@ -1,7 +1,7 @@
 module.exports = {
   clearMocks: true,
   collectCoverageFrom: ['./src/**/*.ts'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/.vscode/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/.vscode/', '/src/index.ts'],
   watchPathIgnorePatterns: ['/node_modules/', '/.vscode/'],
   coverageReporters: ['html', 'text', 'json'],
   coverageThreshold: {
