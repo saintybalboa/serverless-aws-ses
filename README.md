@@ -56,7 +56,7 @@ custom:
 | hostedZoneId             |               | Route53 Hosted Zone ID of specified domain. |
 | emailSenderAliases       |               | A list of aliases available to allow SES to send email from. |
 | emailReceiptRuleActions  |               | A list of actions for receiving email. Please see the [AWS developer guide](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-action.html) and the [AWS SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SES.html#createReceiptRule-property) for a list of available actions and the associated implementation details. |
-| delayEmailVerificationMs | 30000 (ms)    | The plugin needs to allow time for the DNS records to be created before sending an email verification request. |
+| delayEmailVerificationMs | 30000    | Amount of time (ms) the plugin should wait for the DNS records to be created before sending an email verification request. |
 
 ### Usage
 
