@@ -11,8 +11,6 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -20,7 +18,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         registry-url: 'https://npm.pkg.github.com'
+        scope: '@saintybalboa'
     - name: Publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       run: |
         npm i
         npm publish --access public
