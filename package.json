@@ -1,0 +1,65 @@
+{
+  "name": "serverless-aws-ses",
+  "version": "0.0.1",
+  "description": "Serverless AWS SES setup.",
+  "keywords": [
+    "aws",
+    "ses",
+    "verification"
+  ],
+  "author": "Marty-Scott Sainty <marty-scott.sainty@bbc.co.uk>",
+  "homepage": "https://github.com/saintybalboa/serverless-aws-ses#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/src/ServerlessAwsSes.d.ts",
+  "directories": {
+    "dist": "dist",
+    "test": "tests"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/saintybalboa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saintybalboa/serverless-aws-ses.git"
+  },
+  "scripts": {
+    "build": "tsc --incremental",
+    "test": "npm run test:lint && npm run test:type-check && npm run test:coverage",
+    "test:type-check": "tsc",
+    "test:unit": "jest --colors",
+    "test:coverage": "jest --coverage",
+    "test:lint": "npm run test:prettier && eslint '**/*.ts' --fix",
+    "test:prettier": "prettier --write '**/*.ts'"
+  },
+  "bugs": {
+    "url": "https://github.com/saintybalboa/serverless-aws-ses/issues"
+  },
+  "dependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "aws-sdk": "^2.803.0",
+    "delay": "^4.4.0",
+    "serverless": "^2.16.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.16",
+    "@types/node": "^14.14.10",
+    "@types/serverless": "^1.78.16",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "aws-sdk-mock": "^5.1.0",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "jest": "^26.6.3",
+    "jest-aws-sdk-mock": "^1.0.2",
+    "jest-watch-typeahead": "^0.6.1",
+    "lerna": "^3.22.1",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.2"
+  }
+}

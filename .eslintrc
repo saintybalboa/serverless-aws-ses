@@ -1,0 +1,45 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/semi": [
+            "warn",
+            "always"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ],
+        "no-trailing-spaces": [
+            "error", {
+                "skipBlankLines": false
+            }
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 1
+            }
+        ]
+    },
+    "env": {
+        "node": true
+    }
+}
