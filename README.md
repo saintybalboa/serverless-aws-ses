@@ -1,12 +1,26 @@
 # serverless-aws-ses
 
-Configures AWS SES to enable the sending and receiving of mail from email addresses associated with a custom domain.
+A Serverless plugin to configure [AWS SES ](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/Welcome.html) for sending and receiving of email using custom email addresses and domains.
+
+## How it works
+
+1. DNS records are created/updated to verify the email domain and accepting incoming mail.
+
+2. Email addresses and domain are created in AWS SES.
+
+3. A [rule set](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-receipt-rule-set.html) is created and activated for receiving email.
+
+4. A rule with the actions defined in the [config](#plugin-configuration-options) is applied to the rule set.
+
+4. AWS attempts to send an email with a verification link to each email address. The email is retrieved via the resources setup as actions for receiving email.
 
 ## Getting started
 
 ### Prerequisites
 
-Requires the following:
+By default all new accounts are placed in the Amazon SES sandbox, applying certain restrictions such as sending email from other AWS services. Please follow the developer [guide](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html) for requesting production access to remove these restrictions on the account.
+
+Requires the following dependencies:
 
 - [NodeJS](https://nodejs.org/en/download/)
 - [NPM](https://www.npmjs.com/get-npm?utm_source=house&utm_medium=homepage&utm_campaign=free%20orgs&utm_term=Install%20npm)

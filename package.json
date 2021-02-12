@@ -39,7 +39,6 @@
     "url": "https://github.com/saintybalboa/serverless-aws-ses/issues"
   },
   "dependencies": {
-    "@types/aws-sdk": "^2.7.0",
     "aws-sdk": "^2.803.0",
     "delay": "^4.4.0",
     "serverless": "^2.16.1"
